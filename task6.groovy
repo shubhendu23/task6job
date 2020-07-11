@@ -15,7 +15,7 @@ freeStyleJob('deployment launch') {
         shell ('if [[ $(ls | grep php) ]] ; then kubectl create -f /root/task6kube/deploymentphp.yml; else kubectl create -f /root/task6kube/deployment.yml; fi ')
         shell (' sleep 60 ')
         shell ('pod=$(sudo kubectl get --no-headers=true pods -o name | awk -F "/" "{print $2}") ')
-        shell ('kubectl cp * $pod:/var/www/html')     
+        shell ('kubectl cp * $pod:/var/www/html/')     
         shell ('kubectl create -f /root/task6kube/service.yml ')
         }
         
