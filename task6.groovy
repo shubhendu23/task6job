@@ -15,7 +15,7 @@ freeStyleJob('deployment launch') {
         shell ('if [[ $(ls | grep php) ]] ; then kubectl create -f /root/task6kube/deploymentphp.yml; else kubectl create -f /root/task6kube/deployment.yml; fi ')
         shell (' sleep 60 ')
         shell ('pod=$(sudo kubectl get --no-headers=true pods -o name | awk -F "/" "{print $2}") ')
-        shell ('kubectl cp * $pod:/var/www/html/')     
+        shell ('kubectl cp * $(kubectl get --no-headers=true pods -o name | awk -F "/" "{print $2}"):/var/www/html/')     
         shell ('kubectl create -f /root/task6kube/service.yml ')
         }
         
@@ -30,7 +30,7 @@ freeStyleJob('testing') {
     steps {
         
         shell ('status=$(curl -o /dev/null -s -w %{http_code} 192.168.99.100:30000)')
-        shell ('if [[ $status == 200 ]]; then exit 0; else exit 1; fi ')
+        shell ('if [[ $(curl -o /dev/null -s -w %{http_code} 192.168.99.100:30000) == 200 ]]; then exit 0; else exit 1; fi ')
     }
     
 }
