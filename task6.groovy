@@ -10,10 +10,11 @@ freeStyleJob('deployment launch') {
         
     }
     steps {
-        shell ('kubectl create -f pvc.yml ')
-        shell ('kubectl create -f service.yml ')
-        shell (' if [[ $(ls | grep php) ]] ; then kubectl create -f deploymentphp.yml; else kubectl create -f deployment.yml; fi ')
-            
+        shell ('kubectl create -f /root/task6kube/pvc.yml ')
+        shell ('kubectl create -f /root/task6kube/service.yml ')
+        shell ('if [[ $(ls | grep php) ]] ; then kubectl create -f /root/task6kube/deploymentphp.yml; else kubectl create -f /root/task6kube/deployment.yml; fi ')
+        shell ('pod=$(sudo kubectl get --no-headers=true pods -o name | awk -F "/" "{print $2}") ')
+        shell ('kubectl cp * $pod:/var/www/html')     
         }
         
     }
@@ -37,7 +38,7 @@ freeStyleJob('unstable notify') {
          upstream('testing', 'FAILURE')   
     }
     steps {
-      shell ('./mail.py')
+      shell ('python3 /root/task6kube/mail.py')
         
         
     }
@@ -53,3 +54,4 @@ buildPipelineView('task6') {
     showPipelineParameters()
     refreshFrequency(60)
 }
+  
