@@ -37,7 +37,7 @@ freeStyleJob('testing') {
 freeStyleJob('unstable notify') {
     
     triggers {
-         upstream('testing', 'FAILURE')   
+         upstream('testing', 'ABORTED')   
     }
     steps {
       shell ('python3 /root/task6kube/mail.py')
