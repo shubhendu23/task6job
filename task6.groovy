@@ -10,8 +10,7 @@ freeStyleJob('deployment launch') {
         
     }
     steps {
-        shell ('kubectl delete --all all')
-        shell ('kubectl delete pvc --all')
+       
         shell ('kubectl create -f /root/task6kube/pvc.yml ')
         shell (' sleep 60 ')
         shell ('if [[ $(ls | grep php) ]] ; then kubectl create -f /root/task6kube/deploymentphp.yml; else kubectl create -f /root/task6kube/deployment.yml; fi ')
