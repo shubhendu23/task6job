@@ -14,9 +14,10 @@ freeStyleJob('deployment launch') {
         shell (' sleep 60 ')
         shell ('if [[ $(ls | grep php) ]] ; then kubectl create -f /root/task6kube/deploymentphp.yml; else kubectl create -f /root/task6kube/deployment.yml; fi ')
         shell (' sleep 60 ')
-        shell ('pod=$(sudo kubectl get --no-headers=true pods -o name | awk -F "/" "{print $2}")')
-        shell ('kubectl cp * $(kubectl get pod -l web=testing -o jsonpath="{.items[0].metadata.name}" --kubeconfig /root/task-3/config):/var/www/html/')     
-        shell ('kubectl create -f /root/task6kube/service.yml ')
+        //shell ('pod=$(sudo kubectl get --no-headers=true pods -o name | awk -F "/" "{print $2}")')
+        //shell ('kubectl cp * $(kubectl get pod -l web=testing -o jsonpath="{.items[0].metadata.name}" --kubeconfig /root/task-3/config):/var/www/html/')     
+         shell ('bash /root/task6kube/copypage.sh')
+         shell ('kubectl create -f /root/task6kube/service.yml ')
         }
         
     }
