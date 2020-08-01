@@ -37,7 +37,7 @@ freeStyleJob('testing') {
     }
 }
     
-}
+
 freeStyleJob('unstable notify') {
     
    /* triggers {
