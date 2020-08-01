@@ -34,9 +34,9 @@ freeStyleJob('testing') {
     }
      postFailedBuildSteps {
         downstreamParameterized {
-            trigger(String 'unstable notify') {
-                condition(String 'FAILED')
-                triggerWithNoParameters(boolean triggerWithNoParameters = true)
+            trigger( 'unstable notify') {
+                condition( 'FAILED')
+                triggerWithNoParameters(triggerWithNoParameters = true)
 
             }
         }
