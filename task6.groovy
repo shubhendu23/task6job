@@ -32,13 +32,17 @@ freeStyleJob('testing') {
         shell ('status=$(curl -o /dev/null -s -w %{http_code} 192.168.99.100:30000)')
         shell ('if [[ $(curl -o /dev/null -s -w %{http_code} 192.168.99.100:30000) == 200 ]]; then exit 0; else exit 1; fi ')
     }
+     publishers {
+        downstream('unstable notify', 'FAILURE')
+    }
+}
     
 }
 freeStyleJob('unstable notify') {
     
-    triggers {
+   /* triggers {
          upstream('testing', 'ABORTED')   
-    }
+    }*/
     steps {
       shell ('python3 /root/task6kube/mail.py')
         
