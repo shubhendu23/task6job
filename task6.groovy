@@ -1,9 +1,9 @@
-freeStyleJob('deployment launch') {
+freeStyleJob('Job1 Deploy') {
      scm {
         git {
             remote {
                 name('origin')
-                url('https://github.com/shubhendu23/task6web.git')
+                url('https://github.com/aady14/task6web.git')
             }
         }
     triggers {
@@ -13,7 +13,7 @@ freeStyleJob('deployment launch') {
        
         shell ('kubectl create -f /root/task6kube/pvc.yml ')
         shell (' sleep 60 ')
-        shell ('if [[ $(ls | grep php) ]] ; then kubectl create -f /root/task6kube/deploymentphp.yml; else kubectl create -f /root/task6kube/deployment.yml; fi ')
+        shell ('if [[ $(ls | grep php) ]] ; then kubectl create -f /root/task6kube/deployphp.yml; else kubectl create -f /root/task6kube/deploy.yml; fi ')
         shell (' sleep 60 ')
         shell ('bash /root/task6kube/copypage.sh')
         shell ('kubectl create -f /root/task6kube/service.yml ')
@@ -22,10 +22,10 @@ freeStyleJob('deployment launch') {
     }
     
 }
-freeStyleJob('testing') {
+freeStyleJob('Job2 test') {
     
     triggers {
-        upstream('deployment launch', 'SUCCESS')
+        upstream('Job1 Deploy', 'SUCCESS')
     }
     steps {
         
@@ -34,7 +34,7 @@ freeStyleJob('testing') {
     }
      publishers{
         downstreamParameterized {
-            trigger( 'unstable notify') {
+            trigger( 'Job3 notify') {
                 condition( 'FAILED')
                 triggerWithNoParameters(triggerWithNoParameters = true)
 
@@ -45,11 +45,9 @@ freeStyleJob('testing') {
 }
     
 
-freeStyleJob('unstable notify') {
+freeStyleJob('Job3 notify') {
     
-   /* triggers {
-         upstream('testing', 'ABORTED')   
-    }*/
+   
     steps {
       shell ('python3 /root/task6kube/mail.py')
         
@@ -57,12 +55,12 @@ freeStyleJob('unstable notify') {
     }
     
 }
-buildPipelineView('task6') {
+buildPipelineView('Groovy task') {
     filterBuildQueue()
     filterExecutors()
-    title('task6')
+    title('Groovy task')
     displayedBuilds(5)
-    selectedJob('deployment launch')
+    selectedJob('Job1 Deploy')
     alwaysAllowManualTrigger()
     showPipelineParameters()
     refreshFrequency(60)
